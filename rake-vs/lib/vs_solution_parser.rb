@@ -9,8 +9,8 @@ module RakeVs
       proj_name, proj_path, = split_project_params(proj_params)
       
       proj = {}
-      proj[:name] = proj_name.delete('"')
-      proj[:path] = proj_path.delete('"')
+      proj[:name] = proj_name
+      proj[:path] = proj_path
       projects << proj 
 
       projects
@@ -32,10 +32,13 @@ module RakeVs
 
     def split_project_params(project_params_def)
       name, path, = project_params_def.split(",", 3)
-      name.strip!
-      path.strip!
+      strip_and_remove_quote(name)
+      strip_and_remove_quote(path)
       return [name, path]
     end
 
+    def strip_and_remove_quote(s)
+      s.strip!.delete!('"')
+    end
   end
 end
