@@ -35,5 +35,20 @@ module RakeVs
         expect(@project[:type]).to eq(:cpp_project)
       end
     end
+
+    context 'with two projects' do
+      before(:all) do
+        @contents = read_test_data('TwoProjectSolution.sln')
+      end
+
+      before do
+        @parser = VsSolutionParser.new
+        @projects = @parser.parse_project(@contents)
+      end
+
+      it 'parses two project definition' do
+        expect(@projects.size).to eq(2)
+      end
+    end
   end
 end

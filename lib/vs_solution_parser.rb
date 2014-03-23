@@ -4,11 +4,15 @@ module RakeVs
     def parse_project(contents)
       projects = []
 
-      proj_def = extract_project_defs(contents)
-      type, params = split_project_def(proj_def)
-      name, path, guid = split_project_params(params)
-      
-      projects << {:type => type, :name => name, :path => path, :guid => guid} 
+      proj_defs = extract_project_defs(contents)
+      raise "project definition not found" if proj_defs.empty?
+
+      proj_defs.each do |proj_def|
+        type, params = split_project_def(proj_def)
+        name, path, guid = split_project_params(params)
+        
+        projects << {:type => type, :name => name, :path => path, :guid => guid} 
+      end
 
       projects
     end
@@ -17,9 +21,8 @@ module RakeVs
 
     def extract_project_defs(contents)
       # 改行を含むので/m修飾子が必要
-      match_data = contents.match(/Project.+EndProject/m)
-      raise "project definition not found" if match_data.nil?
-      match_data[0]
+      # また最短マッチを行う必要が有るため".+?"としている
+      contents.scan(/Project.+?EndProject/m)
     end
 
     def split_project_def(project_def)
