@@ -7,7 +7,7 @@ module RakeVs
     context "with single project" do
       before do
         @parser = VsSolutionParser.new
-        @contents = "Microsoft Visual Studio Solution File, Format Version 12.00
+        contents = "Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Express 2013 for Windows Desktop
 VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
@@ -28,23 +28,20 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal"
+      @projects = @parser.parse_project(contents)
+      @project = @projects[0]
       end
 
       it 'parses one project definition' do
-        projects = @parser.parse_project(@contents)
-        expect(projects.size).to eq(1)
+        expect(@projects.size).to eq(1)
       end
 
       it 'parses a project name' do
-        projects = @parser.parse_project(@contents)
-        project = projects[0]
-        expect(project[:name]).to eq('Project1')
+        expect(@project[:name]).to eq('Project1')
       end
 
       it 'parses a project path' do
-        projects = @parser.parse_project(@contents)
-        project = projects[0]
-        expect(project[:path]).to eq('Project1\\Project1.vcxproj')
+        expect(@project[:path]).to eq('Project1\\Project1.vcxproj')
       end
     end
   end
