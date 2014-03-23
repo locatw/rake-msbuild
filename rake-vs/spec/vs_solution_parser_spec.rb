@@ -43,6 +43,10 @@ EndGlobal"
       it 'parses a project path' do
         expect(@project[:path]).to eq('Project1\\Project1.vcxproj')
       end
+
+      it 'parses a project GUID' do
+        expect(@project[:guid]).to eq('4A35A8F6-601B-4C6A-B7B5-211A29E7448D')
+      end
     end
   end
 end

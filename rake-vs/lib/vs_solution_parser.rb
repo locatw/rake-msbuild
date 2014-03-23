@@ -6,11 +6,12 @@ module RakeVs
 
       proj_def = extract_project_defs(contents)
       proj_type, proj_params = split_project_def(proj_def)
-      proj_name, proj_path, = split_project_params(proj_params)
+      proj_name, proj_path, proj_guid = split_project_params(proj_params)
       
       proj = {}
       proj[:name] = proj_name
       proj[:path] = proj_path
+      proj[:guid] = proj_guid
       projects << proj 
 
       projects
@@ -31,10 +32,13 @@ module RakeVs
     end
 
     def split_project_params(project_params_def)
-      name, path, = project_params_def.split(",", 3)
+      # カンマと改行で区切る
+      name, path, guid = project_params_def.split(/[,\r\n]/, 4)
       strip_and_remove_quote(name)
       strip_and_remove_quote(path)
-      return [name, path]
+      strip_and_remove_quote(guid)
+      guid.delete!("{}")
+      return [name, path, guid]
     end
 
     def strip_and_remove_quote(s)
