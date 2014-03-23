@@ -9,6 +9,7 @@ module RakeVs
       proj_name, proj_path, proj_guid = split_project_params(proj_params)
       
       proj = {}
+      proj[:type] = proj_type
       proj[:name] = proj_name
       proj[:path] = proj_path
       proj[:guid] = proj_guid
@@ -27,8 +28,22 @@ module RakeVs
     end
 
     def split_project_def(project_def)
-      type, params = project_def.split("=", 2)
+      type_def, params = project_def.split("=", 2)
+      type_guid = extract_project_type(type_def)
+
+      type = case type_guid
+             when '8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942' then :cpp_project
+             else
+             raise "unknown project type"
+             end
+
       return [type, params]
+    end
+
+    def extract_project_type(project_type_def)
+      match_data = project_type_def.match(/Project\(\"\{(.*)\}\"\)/)
+      raise "cannot extract project type" if match_data.nil?
+      match_data[1]
     end
 
     def split_project_params(project_params_def)

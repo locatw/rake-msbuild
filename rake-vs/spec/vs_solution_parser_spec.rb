@@ -47,6 +47,10 @@ EndGlobal"
       it 'parses a project GUID' do
         expect(@project[:guid]).to eq('4A35A8F6-601B-4C6A-B7B5-211A29E7448D')
       end
+
+      it 'parses a project type' do
+        expect(@project[:type]).to eq(:cpp_project)
+      end
     end
   end
 end
