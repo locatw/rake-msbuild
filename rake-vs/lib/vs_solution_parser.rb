@@ -5,15 +5,10 @@ module RakeVs
       projects = []
 
       proj_def = extract_project_defs(contents)
-      proj_type, proj_params = split_project_def(proj_def)
-      proj_name, proj_path, proj_guid = split_project_params(proj_params)
+      type, params = split_project_def(proj_def)
+      name, path, guid = split_project_params(params)
       
-      proj = {}
-      proj[:type] = proj_type
-      proj[:name] = proj_name
-      proj[:path] = proj_path
-      proj[:guid] = proj_guid
-      projects << proj 
+      projects << {:type => type, :name => name, :path => path, :guid => guid} 
 
       projects
     end
