@@ -34,14 +34,14 @@ module RakeVs
     def split_project_params(project_params_def)
       # カンマと改行で区切る
       name, path, guid = project_params_def.split(/[,\r\n]/, 4)
-      strip_and_remove_quote(name)
-      strip_and_remove_quote(path)
-      strip_and_remove_quote(guid)
+      strip_and_remove_quote!(name)
+      strip_and_remove_quote!(path)
+      strip_and_remove_quote!(guid)
       guid.delete!("{}")
       return [name, path, guid]
     end
 
-    def strip_and_remove_quote(s)
+    def strip_and_remove_quote!(s)
       s.strip!.delete!('"')
     end
   end
