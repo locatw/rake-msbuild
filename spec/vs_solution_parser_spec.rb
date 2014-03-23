@@ -49,6 +49,22 @@ module RakeVs
       it 'parses two project definition' do
         expect(@projects.size).to eq(2)
       end
+
+      it 'parses first project' do
+        @proj = @projects[0]
+        expect(@proj[:name]).to eq('Project1')
+        expect(@proj[:path]).to eq('Project1\\Project1.vcxproj')
+        expect(@proj[:guid]).to eq('A59480EC-74D2-4F52-8977-659306B85DEC')
+        expect(@proj[:type]).to eq(:cpp_project)
+      end
+
+      it 'parses second project' do
+        @proj = @projects[1]
+        expect(@proj[:name]).to eq('Project2')
+        expect(@proj[:path]).to eq('Project2\\Project2.vcxproj')
+        expect(@proj[:guid]).to eq('50A18D08-4508-4C00-9326-3A1465B893CE')
+        expect(@proj[:type]).to eq(:cpp_project)
+      end
     end
   end
 end
