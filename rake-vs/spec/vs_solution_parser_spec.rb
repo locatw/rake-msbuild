@@ -11,7 +11,7 @@ module RakeVs
 # Visual Studio Express 2013 for Windows Desktop
 VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project(\"{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}\") = \"Project1\", \"Project1\Project1.vcxproj\", \"{4A35A8F6-601B-4C6A-B7B5-211A29E7448D}\"
+Project(\"{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}\") = \"Project1\", \"Project1\\Project1.vcxproj\", \"{4A35A8F6-601B-4C6A-B7B5-211A29E7448D}\"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +39,12 @@ EndGlobal"
         projects = @parser.parse_project(@contents)
         project = projects[0]
         expect(project[:name]).to eq('Project1')
+      end
+
+      it 'parses a project path' do
+        projects = @parser.parse_project(@contents)
+        project = projects[0]
+        expect(project[:path]).to eq('Project1\\Project1.vcxproj')
       end
     end
   end

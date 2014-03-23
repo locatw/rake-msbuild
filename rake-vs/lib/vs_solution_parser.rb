@@ -6,10 +6,11 @@ module RakeVs
 
       proj_def = extract_project_defs(contents)
       proj_type, proj_params = split_project_def(proj_def)
-      proj_name, = split_project_params(proj_params)
+      proj_name, proj_path, = split_project_params(proj_params)
       
       proj = {}
       proj[:name] = proj_name.delete('"')
+      proj[:path] = proj_path.delete('"')
       projects << proj 
 
       projects
@@ -30,9 +31,10 @@ module RakeVs
     end
 
     def split_project_params(project_params_def)
-      name, = project_params_def.split(",", 2)
+      name, path, = project_params_def.split(",", 3)
       name.strip!
-      return [name]
+      path.strip!
+      return [name, path]
     end
 
   end
