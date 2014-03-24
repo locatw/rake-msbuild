@@ -7,6 +7,8 @@ module RakeMSBuild
   describe 'VsSolution' do
     before do
       @vss = VsSolution.new
+      @vss.stub(:read_sln) {}
+
       @project1 = {}
       @project1[:name] = 'Project1'
       @project1[:path] = 'ProjectPath1'
@@ -54,7 +56,6 @@ module RakeMSBuild
     context 'that loaded a solution file with two project' do
       before do
         @vss.stub(:parse) { [@project1, @project2] }
-        @vss.stub(:read_sln) {}
         @vss.load('not_exist.sln')
       end
 
