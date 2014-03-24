@@ -2,7 +2,7 @@
 require 'spec_helper'
 require File.expand_path('../../lib/vs_solution_parser', __FILE__)
 
-module RakeVs
+module RakeMSBuild
   describe 'VsSolutionParser' do
     context "with single project" do
       before(:all) do
