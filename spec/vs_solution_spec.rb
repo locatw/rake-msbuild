@@ -7,19 +7,22 @@ module RakeMSBuild
   describe 'VsSolution' do
     before do
       @vss = VsSolution.new
+      @project1 = {}
+      @project1[:name] = 'Project1'
+      @project1[:path] = 'ProjectPath1'
+      @project1[:guid] = 'AAA'
+      @project1[:type] = :cpp_project
+
+      @project2 = {}
+      @project2[:name] = 'Project2'
+      @project2[:path] = 'ProjectPath2'
+      @project2[:guid] = 'BBB'
+      @project2[:type] = :cpp_project
     end
 
     context 'that loaded a solution file with single project' do
       before do
-        @vss.stub(:parse) {
-          project = {}
-          project[:name] = 'Project1'
-          project[:path] = 'ProjectPath'
-          project[:guid] = 'AAA'
-          project[:type] = :cpp_project
-
-          [project]
-        }
+        @vss.stub(:parse) { [@project1] }
         @vss.load(File.expand_path("../data/SingleProjectSolution.sln", __FILE__))
       end
 
@@ -34,7 +37,7 @@ module RakeMSBuild
 
       it 'has a project that has correct path' do
         project = @vss.projects[0]
-        expect(project.path).to eq('ProjectPath')
+        expect(project.path).to eq('ProjectPath1')
       end
 
       it 'has a project that has correct guid' do
@@ -50,21 +53,7 @@ module RakeMSBuild
 
     context 'that loaded a solution file with two project' do
       before do
-        @vss.stub(:parse) {
-          project1 = {}
-          project1[:name] = 'Project1'
-          project1[:path] = 'ProjectPath1'
-          project1[:guid] = 'AAA'
-          project1[:type] = :cpp_project
-
-          project2 = {}
-          project2[:name] = 'Project2'
-          project2[:path] = 'ProjectPath2'
-          project2[:guid] = 'BBB'
-          project2[:type] = :cpp_project
-
-          [project1, project2]
-        }
+        @vss.stub(:parse) { [@project1, @project2] }
         @vss.stub(:read_sln) {}
         @vss.load('not_exist.sln')
       end
