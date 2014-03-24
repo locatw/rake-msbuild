@@ -25,7 +25,7 @@ module RakeMSBuild
     context 'that loaded a solution file with single project' do
       before do
         @vss.stub(:parse) { [@project1] }
-        @vss.load(File.expand_path("../data/SingleProjectSolution.sln", __FILE__))
+        @vss.load('not_exist.sln')
       end
 
       it 'has one project' do
