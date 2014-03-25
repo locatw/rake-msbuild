@@ -1,7 +1,7 @@
 require File.expand_path('../vs_project', __FILE__)
 require File.expand_path('../vs_solution_parser', __FILE__)
 
-module RakeMSBuild
+module VSRake
   class VsSolution
     
     attr_reader :projects

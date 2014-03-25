@@ -1,4 +1,4 @@
-module RakeMSBuild
+module VSRake
   class VsSolutionParser
 
     def parse_project(contents)

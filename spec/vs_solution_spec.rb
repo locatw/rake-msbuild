@@ -3,7 +3,7 @@ require 'spec_helper'
 require File.expand_path('../../lib/vs_solution', __FILE__)
 require File.expand_path('../../lib/vs_solution_parser', __FILE__)
 
-module RakeMSBuild
+module VSRake
   describe 'VsSolution' do
     before do
       @vss = VsSolution.new

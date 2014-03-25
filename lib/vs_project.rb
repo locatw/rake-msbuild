@@ -1,4 +1,4 @@
-module RakeMSBuild
+module VSRake
   class VsProject
     attr_reader :name, :path, :guid, :type
 
