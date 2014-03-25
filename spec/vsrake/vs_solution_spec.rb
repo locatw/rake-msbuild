@@ -1,7 +1,7 @@
 # coding: utf-8
 require 'spec_helper'
-require File.expand_path('../../lib/vs_solution', __FILE__)
-require File.expand_path('../../lib/vs_solution_parser', __FILE__)
+require File.expand_path('../../../lib/vsrake/vs_solution', __FILE__)
+require File.expand_path('../../../lib/vsrake/vs_solution_parser', __FILE__)
 
 module VSRake
   describe 'VsSolution' do
