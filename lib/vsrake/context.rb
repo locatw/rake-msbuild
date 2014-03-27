@@ -1,15 +1,13 @@
 # coding: utf-8
 
 module VSRake
-  class Config
-    attr_accessor :exe, :solution
+  class Context
+    attr_accessor :exe, :solution, :options
+
+    def initialize
+      exe = ""
+      solution = ""
+      options = []
+    end
   end
-
-  attr_reader :config
-
-  def self.configure(&block)
-    @config = Config.new
-    yield @config
-  end
-
 end
