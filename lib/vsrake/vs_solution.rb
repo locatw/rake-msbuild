@@ -11,7 +11,6 @@ module VSRake
     end
     
     def load(sln_path)
-      parser = VsSolutionParser.new
       projects = parse(read_sln(sln_path))
       projects.each do |proj|
         @projects << VsProject.new(proj[:name], proj[:path], proj[:guid], proj[:type])
@@ -30,6 +29,7 @@ module VSRake
     end
 
     def parse(sln)
+      parser = VsSolutionParser.new
       parser.parse_project(sln)
     end
   end
