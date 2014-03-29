@@ -7,15 +7,16 @@ module VSRake
     before do
       Rake.application = Rake::Application.new
       MSBuildTask.new.generate_build_tasks
-      @tasks = Rake.application.tasks
+      tasks = Rake.application.tasks
+      @task_names = Rake.application.tasks.map {|t| t.name}
     end
 
     it "generates a task named 'build'" do
-      task_names = []
-      @tasks.each do |t|
-        task_names << t.name
-      end
-      expect(task_names).to be_include("build")
+      expect(@task_names).to include("build")
+    end
+
+    it "generates a task named 'build_project'" do
+      expect(@task_names).to include("build_project")
     end
   end
 end

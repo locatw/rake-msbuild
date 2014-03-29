@@ -1,5 +1,6 @@
 require 'rake'
 require File.expand_path('../context', __FILE__)
+require File.expand_path('../vs_solution', __FILE__)
 
 module VSRake
   class MSBuildTask
@@ -12,6 +13,7 @@ module VSRake
 
     def generate_build_tasks
       generate_build_task
+      generate_build_project_task
     end
 
     private
@@ -20,6 +22,23 @@ module VSRake
       Rake::Task.define_task(:build, [:configuration, :platform]) do |t, args|
         register_config_option(args.to_hash, "Release")
         register_platform_option(args.to_hash, "Win32")
+        execute_msbuild
+      end
+    end
+
+    def generate_build_project_task
+      Rake::Task.define_task(:build_project, [:name, :configuration, :platform]) do |t, args|
+        args = args.to_hash
+
+        raise "project name is not specified" unless args.has_key?(:name)
+        
+        project = find_project_by_name(args[:name])
+        raise "specified project is not found" if project.nil?
+        
+        register_project(project)
+        register_config_option(args, "Release")
+        register_platform_option(args, "Win32")
+
         execute_msbuild
       end
     end
@@ -52,6 +71,19 @@ module VSRake
 
     def execute_msbuild_command(command)
       Rake::FileUtilsExt.sh command
+    end 
+
+    def find_project_by_name(project_name)
+      vss = VsSolution.new
+      vss.load(@context.solution)
+      vss.projects.find {|proj| proj.name == project_name}
+    end
+
+    def register_project(project)
+      proj_filepath = File.dirname(@context.solution)
+      proj_filepath += "/" + project.path
+
+      @context.solution = proj_filepath
     end
   end
 end
