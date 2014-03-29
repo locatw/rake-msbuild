@@ -9,7 +9,7 @@ module VSRake
 
     def configure(&block)
       yield build_task.context
-      @build_task.generate_build_tasks
+      build_task.generate_build_tasks
     end
   end
 end

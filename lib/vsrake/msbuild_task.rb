@@ -20,7 +20,7 @@ module VSRake
       Rake::Task.define_task(:build, [:configuration, :platform]) do |t, args|
         register_config_option(args.to_hash, "Release")
         register_platform_option(args.to_hash, "Win32")
-        run_msbuild
+        execute_msbuild
       end
     end
 
@@ -40,12 +40,18 @@ module VSRake
       @context.options << "/p:Platform=#{param}"
     end
 
-    def run_msbuild
+    def execute_msbuild
       msbuild = @context.exe
       options = @context.options.join(' ')
       solution = @context.solution
 
-      sh "#{msbuild} #{options} #{solution} | nkf -w"
+      command = "#{msbuild} #{options} #{solution} | nkf -w"
+
+      execute_msbuild_command(command)
+    end
+
+    def execute_msbuild_command(command)
+      sh command
     end
   end
 end
