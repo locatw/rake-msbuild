@@ -1,10 +1,10 @@
 require 'spec_helper'
 require File.expand_path('../../../lib/vsrake/vsrake_module', __FILE__)
 
-describe "VSRake" do
+describe "VSRake module" do
   include VSRake
 
-  context ".configure" do
+  context "configure" do
     it "configures MSBuild task setting" do
       VSRake.configure do |c|
         c.exe = 'msbuild.exe'
