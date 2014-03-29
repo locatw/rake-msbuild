@@ -5,9 +5,9 @@ module VSRake
     attr_accessor :exe, :solution, :options
 
     def initialize
-      exe = ""
-      solution = ""
-      options = []
+      @exe = ""
+      @solution = ""
+      @options = []
     end
   end
 end
