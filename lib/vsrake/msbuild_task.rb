@@ -3,7 +3,7 @@ require File.expand_path('../context', __FILE__)
 
 module VSRake
   class MSBuildTask
-    attr_reader :context
+    attr_accessor :context
 
     def initialize
       super
