@@ -51,7 +51,7 @@ module VSRake
     end
 
     def execute_msbuild_command(command)
-      sh command
+      Rake::FileUtilsExt.sh command
     end
   end
 end
