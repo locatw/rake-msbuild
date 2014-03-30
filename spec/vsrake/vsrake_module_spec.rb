@@ -15,11 +15,6 @@ describe "VSRake module" do
       expect(cxt.exe).to eq('msbuild.exe')
       expect(cxt.solution).to eq('sample.sln')
     end
-
-    it "generates a rake task named 'build'" do
-      task_names = Rake.application.tasks.map{|t| t.name}
-      expect(task_names).to include('build')
-    end
   end
 end
 
