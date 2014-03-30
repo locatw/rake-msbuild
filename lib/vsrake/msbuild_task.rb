@@ -14,6 +14,7 @@ module VSRake
     def generate_build_tasks
       generate_build_task
       generate_build_project_task
+      generate_rebuild_task
     end
 
     private
@@ -42,6 +43,20 @@ module VSRake
 
         execute_msbuild
       end
+    end
+
+    def generate_rebuild_task
+      Rake::Task.define_task(:rebuild, [:configuration, :platform]) do |t, args|
+        args = args.to_hash
+        register_target_option("rebuild")
+        register_config_option(args, "Release")
+        register_platform_option(args, "Win32")
+        execute_msbuild
+      end
+    end
+
+    def register_target_option(target)
+      @context.options << "/t:Rebuild"
     end
 
     def register_config_option(build_args, default)

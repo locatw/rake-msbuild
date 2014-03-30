@@ -18,5 +18,9 @@ module VSRake
     it "generates a task named 'build_project'" do
       expect(@task_names).to include("build_project")
     end
+    
+    it "generates a task named 'rebuild'" do
+      expect(@task_names).to include("rebuild")
+    end
   end
 end
