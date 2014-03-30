@@ -76,7 +76,7 @@ module VSRake
     def find_project_by_name(project_name)
       vss = VsSolution.new
       vss.load(@context.solution)
-      vss.projects.find {|proj| proj.name == project_name}
+      vss.project(project_name)
     end
 
     def register_project(project)

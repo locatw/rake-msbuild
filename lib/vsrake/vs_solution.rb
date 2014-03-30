@@ -20,6 +20,10 @@ module VSRake
       end
     end
 
+    def project(project_name)
+      @projects.find {|proj| proj.name == project_name}
+    end
+
     private
 
     def create_parser
