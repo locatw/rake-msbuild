@@ -6,12 +6,12 @@ module VSRake
   describe 'VsSolutionParser' do
     context "with single project" do
       before(:all) do
-        @contents = read_test_data('SingleProjectSolution.sln')
+        @solution_path = make_solution_path("SingleProjectSolution")
       end
 
       before do
         @parser = VsSolutionParser.new
-        @projects = @parser.parse_project(@contents)
+        @projects = @parser.parse(@solution_path)
         @project = @projects[0]
       end
 
@@ -38,12 +38,12 @@ module VSRake
 
     context 'with two projects' do
       before(:all) do
-        @contents = read_test_data('TwoProjectSolution.sln')
+        @solution_path = make_solution_path("TwoProjectSolution")
       end
 
       before do
         @parser = VsSolutionParser.new
-        @projects = @parser.parse_project(@contents)
+        @projects = @parser.parse(@solution_path)
       end
 
       it 'parses two project definition' do

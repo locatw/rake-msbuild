@@ -6,8 +6,10 @@ require File.expand_path('../../../lib/vsrake/vs_solution_parser', __FILE__)
 module VSRake
   describe 'VsSolution' do
     before do
+      @parser_double = double("solution_parser")
+
       @vss = VsSolution.new
-      @vss.stub(:read_sln) {}
+      @vss.stub(:create_parser).and_return(@parser_double)
 
       @project1 = {}
       @project1[:name] = 'Project1'
@@ -24,8 +26,10 @@ module VSRake
 
     context 'that loaded a solution file with single project' do
       before do
-        @vss.stub(:parse) { [@project1] }
-        @vss.load('not_exist.sln')
+        @parser_double.should_receive(:parse)
+                      .with("dummy_path")
+                      .and_return([@project1])
+        @vss.load("dummy_path")
       end
 
       it 'has one project' do
@@ -55,8 +59,10 @@ module VSRake
 
     context 'that loaded a solution file with two project' do
       before do
-        @vss.stub(:parse) { [@project1, @project2] }
-        @vss.load('not_exist.sln')
+        @parser_double.should_receive(:parse)
+                      .with("dummy_path")
+                      .and_return([@project1, @project2])
+        @vss.load("dummy_path")
       end
 
       it 'has two project' do

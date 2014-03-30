@@ -4,14 +4,17 @@ require File.expand_path('../vs_solution_parser', __FILE__)
 module VSRake
   class VsSolution
     
-    attr_reader :projects
+    attr_reader :solution_path, :projects
 
-    def initialize()
+    def initialize
+      @solution_path = ""
       @projects = []
     end
-    
-    def load(sln_path)
-      projects = parse(read_sln(sln_path))
+
+    def load(solution_path)
+      @solution_path = solution_path
+      parser = create_parser
+      projects = parser.parse(@solution_path)
       projects.each do |proj|
         @projects << VsProject.new(proj[:name], proj[:path], proj[:guid], proj[:type])
       end
@@ -19,18 +22,8 @@ module VSRake
 
     private
 
-    def read_sln(sln_path)
-      contents = ""
-      File.open(sln_path) do |f|
-        f.read(nil, contents)
-      end
-
-      contents
-    end
-
-    def parse(sln)
-      parser = VsSolutionParser.new
-      parser.parse_project(sln)
+    def create_parser
+      VsSolutionParser.new
     end
   end
 end

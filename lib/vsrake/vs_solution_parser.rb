@@ -1,23 +1,33 @@
 module VSRake
   class VsSolutionParser
-
-    def parse_project(contents)
-      projects = []
+    def parse(solution_path)
+      contents = read_solution(solution_path)
 
       proj_defs = extract_project_defs(contents)
       raise "project definition not found" if proj_defs.empty?
 
+      projects = []
       proj_defs.each do |proj_def|
         type, params = split_project_def(proj_def)
         name, path, guid = split_project_params(params)
-        
-        projects << {:type => type, :name => name, :path => path, :guid => guid} 
+
+        projects << {:type => type, :name => name,
+                     :path => path, :guid => guid}
       end
 
       projects
     end
 
     private
+
+    def read_solution(sln_path)
+      contents = ""
+      File.open(sln_path) do |f|
+        f.read(nil, contents)
+      end
+
+      contents
+    end
 
     def extract_project_defs(contents)
       # 改行を含むので/m修飾子が必要
