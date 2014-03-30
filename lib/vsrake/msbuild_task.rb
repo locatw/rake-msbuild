@@ -22,8 +22,8 @@ module VSRake
     def generate_build_task
       Rake::Task.define_task(:build, [:configuration, :platform]) do |t, args|
         args = args.to_hash
-        register_config_option(args, "Release")
-        register_platform_option(args, "Win32")
+        register_config_option(args)
+        register_platform_option(args)
         execute_msbuild
       end
     end
@@ -38,8 +38,8 @@ module VSRake
         raise "specified project is not found" if project.nil?
         
         register_project(project)
-        register_config_option(args, "Release")
-        register_platform_option(args, "Win32")
+        register_config_option(args)
+        register_platform_option(args)
 
         execute_msbuild
       end
@@ -49,8 +49,8 @@ module VSRake
       Rake::Task.define_task(:rebuild, [:configuration, :platform]) do |t, args|
         args = args.to_hash
         register_target_option("rebuild")
-        register_config_option(args, "Release")
-        register_platform_option(args, "Win32")
+        register_config_option(args)
+        register_platform_option(args)
         execute_msbuild
       end
     end
@@ -59,16 +59,16 @@ module VSRake
       @context.options << "/t:Rebuild"
     end
 
-    def register_config_option(build_args, default)
-      param = default
+    def register_config_option(build_args)
+      param = "Release"
       if build_args.has_key?(:configuration)
         param = build_args[:configuration]
       end
       @context.options << "/p:Configuration=#{param}"
     end
     
-    def register_platform_option(build_args, default)
-      param = default
+    def register_platform_option(build_args)
+      param = "Win32"
       if build_args.has_key?(:platform)
         param = build_args[:platform]
       end
