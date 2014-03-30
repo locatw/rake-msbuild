@@ -20,8 +20,9 @@ module VSRake
 
     def generate_build_task
       Rake::Task.define_task(:build, [:configuration, :platform]) do |t, args|
-        register_config_option(args.to_hash, "Release")
-        register_platform_option(args.to_hash, "Win32")
+        args = args.to_hash
+        register_config_option(args, "Release")
+        register_platform_option(args, "Win32")
         execute_msbuild
       end
     end
