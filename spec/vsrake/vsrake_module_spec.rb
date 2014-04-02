@@ -26,7 +26,7 @@ def rebuild_task?(build_type)
   build_type.start_with?("rebuild")
 end
   
-["build", "rebuild", "build_project"].each do |build_type|
+["build", "rebuild", "build_project", "rebuild_project"].each do |build_type|
   describe "generetaed task named '#{build_type}'" do
     include VSRake
   

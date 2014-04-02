@@ -15,6 +15,7 @@ module VSRake
       generate_build_task
       generate_build_project_task
       generate_rebuild_task
+      generate_rebuild_project_task
     end
 
     private
@@ -51,6 +52,27 @@ module VSRake
         register_target_option("rebuild")
         register_config_option(args)
         register_platform_option(args)
+        execute_msbuild
+      end
+    end
+
+    def generate_rebuild_project_task
+      Rake::Task.define_task(
+        :rebuild_project,
+        [:name, :configuration, :platform]
+      ) do |t, args|
+        args = args.to_hash
+
+        raise "project name is not specified" unless args.has_key?(:name)
+        
+        project = find_project_by_name(args[:name])
+        raise "specified project is not found" if project.nil?
+        
+        register_target_option("rebuild")
+        register_project(project)
+        register_config_option(args)
+        register_platform_option(args)
+
         execute_msbuild
       end
     end
