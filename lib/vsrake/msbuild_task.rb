@@ -33,11 +33,8 @@ module VSRake
       Rake::Task.define_task(:build_project, [:name, :configuration, :platform]) do |t, args|
         args = args.to_hash
 
-        raise "project name is not specified" unless args.has_key?(:name)
-        
-        project = find_project_by_name(args[:name])
-        raise "specified project is not found" if project.nil?
-        
+        project = load_project(args)
+
         register_project(project)
         register_config_option(args)
         register_platform_option(args)
@@ -63,10 +60,7 @@ module VSRake
       ) do |t, args|
         args = args.to_hash
 
-        raise "project name is not specified" unless args.has_key?(:name)
-        
-        project = find_project_by_name(args[:name])
-        raise "specified project is not found" if project.nil?
+        project = load_project(args)
         
         register_target_option("rebuild")
         register_project(project)
@@ -110,6 +104,15 @@ module VSRake
     def execute_msbuild_command(command)
       Rake::FileUtilsExt.sh command
     end 
+
+    def load_project(args)
+      raise "project name is not specified" unless args.has_key?(:name)
+      
+      project = find_project_by_name(args[:name])
+      raise "specified project is not found" if project.nil?
+
+      project
+    end
 
     def find_project_by_name(project_name)
       vss = VsSolution.new
