@@ -16,6 +16,7 @@ module VSRake
       generate_build_project_task
       generate_rebuild_task
       generate_rebuild_project_task
+      generate_clean_task
     end
 
     private
@@ -46,7 +47,7 @@ module VSRake
     def generate_rebuild_task
       Rake::Task.define_task(:rebuild, [:configuration, :platform]) do |t, args|
         args = args.to_hash
-        register_target_option("rebuild")
+        register_target_option("Rebuild")
         register_config_option(args)
         register_platform_option(args)
         execute_msbuild
@@ -62,7 +63,7 @@ module VSRake
 
         project = load_project(args)
         
-        register_target_option("rebuild")
+        register_target_option("Rebuild")
         register_project(project)
         register_config_option(args)
         register_platform_option(args)
@@ -71,8 +72,16 @@ module VSRake
       end
     end
 
+    def generate_clean_task
+      Rake::Task.define_task(:clean) do |t|
+        register_target_option("Clean")
+
+        execute_msbuild
+      end
+    end
+
     def register_target_option(target)
-      @context.options << "/t:Rebuild"
+      @context.options << "/t:#{target}"
     end
 
     def register_config_option(build_args)

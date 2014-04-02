@@ -107,4 +107,32 @@ end
   end
 end
 
+describe "generetaed task named 'clean'" do
+  include VSRake
+  
+  def initialize_rake
+    Rake.application.clear
+  end
+
+  before do
+    initialize_rake
+    VSRake.build_task.context.options.clear
+    
+    VSRake.configure do |c|
+      c.exe = 'msbuild.exe'
+      c.solution = 'sample.sln'
+    end
+  
+    @build_task = VSRake.build_task
+    @build_task.stub(:execute_msbuild_command)
+    
+    @options = @build_task.context.options
+  end
+
+  it "execute clean" do
+    Rake::Task[:clean].invoke()
+
+    expect(@options).to include("/t:Clean")
+  end
+end
 
