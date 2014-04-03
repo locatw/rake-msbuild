@@ -12,23 +12,23 @@ module VSRake
     end
 
     it "generates a task named 'build'" do
-      expect(@task_names).to include("build")
+      expect(@task_names).to include("vs:build")
     end
 
     it "generates a task named 'build_project'" do
-      expect(@task_names).to include("build_project")
+      expect(@task_names).to include("vs:build_project")
     end
     
     it "generates a task named 'rebuild'" do
-      expect(@task_names).to include("rebuild")
+      expect(@task_names).to include("vs:rebuild")
     end
 
     it "generates a task named 'rebuild_project'" do
-      expect(@task_names).to include("rebuild_project")
+      expect(@task_names).to include("vs:rebuild_project")
     end
 
     it "generates a task named 'clean'" do
-      expect(@task_names).to include("clean")
+      expect(@task_names).to include("vs:clean")
     end
   end
 end

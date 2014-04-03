@@ -22,61 +22,71 @@ module VSRake
     private
 
     def generate_build_task
-      Rake::Task.define_task(:build, [:configuration, :platform]) do |t, args|
-        args = args.to_hash
-        register_config_option(args)
-        register_platform_option(args)
-        execute_msbuild
+      Rake.application.in_namespace("vs") do |ns|
+        Rake::Task.define_task(:build, [:configuration, :platform]) do |t, args|
+          args = args.to_hash
+          register_config_option(args)
+          register_platform_option(args)
+          execute_msbuild
+        end
       end
     end
 
     def generate_build_project_task
-      Rake::Task.define_task(:build_project, [:name, :configuration, :platform]) do |t, args|
-        args = args.to_hash
+      Rake.application.in_namespace("vs") do |ns|
+        Rake::Task.define_task(:build_project, [:name, :configuration, :platform]) do |t, args|
+          args = args.to_hash
 
-        project = load_project(args)
+          project = load_project(args)
 
-        register_project(project)
-        register_config_option(args)
-        register_platform_option(args)
+          register_project(project)
+          register_config_option(args)
+          register_platform_option(args)
 
-        execute_msbuild
+          execute_msbuild
+        end
       end
     end
 
     def generate_rebuild_task
-      Rake::Task.define_task(:rebuild, [:configuration, :platform]) do |t, args|
-        args = args.to_hash
-        register_target_option("Rebuild")
-        register_config_option(args)
-        register_platform_option(args)
-        execute_msbuild
+      Rake.application.in_namespace("vs") do |ns|
+        Rake::Task.define_task(:rebuild, [:configuration, :platform]) do |t, args|
+          args = args.to_hash
+          register_target_option("Rebuild")
+          register_config_option(args)
+          register_platform_option(args)
+          execute_msbuild
+        end
       end
     end
 
     def generate_rebuild_project_task
-      Rake::Task.define_task(
-        :rebuild_project,
-        [:name, :configuration, :platform]
-      ) do |t, args|
-        args = args.to_hash
+      Rake.application.in_namespace("vs") do |ns|
+        Rake::Task.define_task(
+          :rebuild_project,
+          [:name, :configuration, :platform]
+        ) do |t, args|
+          args = args.to_hash
 
-        project = load_project(args)
-        
-        register_target_option("Rebuild")
-        register_project(project)
-        register_config_option(args)
-        register_platform_option(args)
+          project = load_project(args)
+          
+          register_target_option("Rebuild")
+          register_project(project)
+          register_config_option(args)
+          register_platform_option(args)
 
-        execute_msbuild
+          execute_msbuild
+        end
       end
     end
 
     def generate_clean_task
-      Rake::Task.define_task(:clean) do |t|
-        register_target_option("Clean")
+      Rake.application.in_namespace("vs") do |ns|
+        Rake::Task.define_task(:clean) do |t|
+          register_target_option("Clean")
 
-        execute_msbuild
+          execute_msbuild
+        end
       end
     end
 
