@@ -27,7 +27,7 @@ def rebuild_task?(build_type)
 end
   
 ["vs:build", "vs:rebuild", "vs:build_project", "vs:rebuild_project"].each do |build_type|
-  describe "generetaed task named '#{build_type}'" do
+  describe "defined task named '#{build_type}'" do
     include VSRake
   
     def initialize_rake
@@ -107,7 +107,7 @@ end
   end
 end
 
-describe "generetaed task named 'vs:clean'" do
+describe "defined task named 'vs:clean'" do
   include VSRake
   
   def initialize_rake

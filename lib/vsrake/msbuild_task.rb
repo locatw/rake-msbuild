@@ -11,37 +11,37 @@ module VSRake
       @context = Context.new
     end
 
-    def generate_build_tasks
+    def define_tasks
       Rake.application.in_namespace("vs") do |ns|
-        generate_build_task
-        generate_build_project_task
-        generate_rebuild_task
-        generate_rebuild_project_task
-        generate_clean_task
+        define_build_task
+        define_build_project_task
+        define_rebuild_task
+        define_rebuild_project_task
+        define_clean_task
       end
     end
 
     private
 
-    def generate_build_task
+    def define_build_task
       Rake::Task.define_task(:build, [:configuration, :platform]) do |t, args|
         execute_task(t.name, args, "Build")
       end
     end
 
-    def generate_build_project_task
+    def define_build_project_task
       Rake::Task.define_task(:build_project, [:name, :configuration, :platform]) do |t, args|
         execute_task(t.name, args, "Build")
       end
     end
 
-    def generate_rebuild_task
+    def define_rebuild_task
       Rake::Task.define_task(:rebuild, [:configuration, :platform]) do |t, args|
         execute_task(t.name, args, "Rebuild")
       end
     end
 
-    def generate_rebuild_project_task
+    def define_rebuild_project_task
       Rake::Task.define_task(
         :rebuild_project,
         [:name, :configuration, :platform]
@@ -50,7 +50,7 @@ module VSRake
       end
     end
 
-    def generate_clean_task
+    def define_clean_task
       Rake::Task.define_task(:clean) do |t|
         execute_task(t.name, {}, "Clean")
       end

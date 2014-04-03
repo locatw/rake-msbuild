@@ -6,28 +6,28 @@ module VSRake
   describe 'MSBuildTask' do
     before do
       Rake.application = Rake::Application.new
-      MSBuildTask.new.generate_build_tasks
+      MSBuildTask.new.define_tasks
       tasks = Rake.application.tasks
       @task_names = Rake.application.tasks.map {|t| t.name}
     end
 
-    it "generates a task named 'build'" do
+    it "defines a task named 'build'" do
       expect(@task_names).to include("vs:build")
     end
 
-    it "generates a task named 'build_project'" do
+    it "defines a task named 'build_project'" do
       expect(@task_names).to include("vs:build_project")
     end
     
-    it "generates a task named 'rebuild'" do
+    it "defines a task named 'rebuild'" do
       expect(@task_names).to include("vs:rebuild")
     end
 
-    it "generates a task named 'rebuild_project'" do
+    it "defines a task named 'rebuild_project'" do
       expect(@task_names).to include("vs:rebuild_project")
     end
 
-    it "generates a task named 'clean'" do
+    it "defines a task named 'clean'" do
       expect(@task_names).to include("vs:clean")
     end
   end
