@@ -25,34 +25,19 @@ module VSRake
 
     def generate_build_task
       Rake::Task.define_task(:build, [:configuration, :platform]) do |t, args|
-        args = args.to_hash
-        register_config_option(args)
-        register_platform_option(args)
-        execute_msbuild
+        execute_task(t.name, args, "Build")
       end
     end
 
     def generate_build_project_task
       Rake::Task.define_task(:build_project, [:name, :configuration, :platform]) do |t, args|
-        args = args.to_hash
-
-        project = load_project(args)
-
-        register_project(project)
-        register_config_option(args)
-        register_platform_option(args)
-
-        execute_msbuild
+        execute_task(t.name, args, "Build")
       end
     end
 
     def generate_rebuild_task
       Rake::Task.define_task(:rebuild, [:configuration, :platform]) do |t, args|
-        args = args.to_hash
-        register_target_option("Rebuild")
-        register_config_option(args)
-        register_platform_option(args)
-        execute_msbuild
+        execute_task(t.name, args, "Rebuild")
       end
     end
 
@@ -61,24 +46,29 @@ module VSRake
         :rebuild_project,
         [:name, :configuration, :platform]
       ) do |t, args|
-        args = args.to_hash
-
-        project = load_project(args)
-        
-        register_target_option("Rebuild")
-        register_project(project)
-        register_config_option(args)
-        register_platform_option(args)
-
-        execute_msbuild
+        execute_task(t.name, args, "Rebuild")
       end
     end
 
     def generate_clean_task
       Rake::Task.define_task(:clean) do |t|
-        register_target_option("Clean")
+        execute_task(t.name, {}, "Clean")
+      end
+    end
 
-        execute_msbuild
+    def execute_task(task_name, args, target)
+      register_options(task_name, args, target)
+      execute_msbuild
+    end
+
+    def register_options(task_name, args, target)
+      args = args.to_hash
+
+      register_target_option(target)
+      if task_name != "vs:clean"
+        register_project(args) if task_for_project?(task_name)
+        register_config_option(args)
+        register_platform_option(args)
       end
     end
 
@@ -131,11 +121,17 @@ module VSRake
       vss.project(project_name)
     end
 
-    def register_project(project)
+    def register_project(args)
+      project = load_project(args)
+
       proj_filepath = File.dirname(@context.solution)
       proj_filepath += "/" + project.path
 
       @context.solution = proj_filepath
+    end
+
+    def task_for_project?(task_name)
+      task_name.end_with?("_project")
     end
   end
 end
